@@ -9,8 +9,8 @@
 | **DomainUserList**         | 执行`net user Uname /domain`，限于单域环境 |    4    |
 | **SharpScreenshot**        | 截图工具                              |    4    |
 | **ShellCode_Launcher**     | `shellcode` 加载器                   |    4    |
-|                            |                                   |         |
+| **SharpSMBVer**            | 使用`SMB` 协议探测系统信息                  |    4    |
 | **WeblogicRCE**            | `Weblogic` 的反序列化系列检测工具            |    4    |
 | **SharpADDNSDump**         | 转存 `LDAP` 中的 `DNS` 记录             |    4    |
-| **SharpChromeHistoryList** | 获取 Chrome浏览器的浏览、下载记录              |    4    |
+| **SharpChromeHistoryList** | 获取 ` Chrome` 浏览器的浏览、下载记录          |    4    |
 

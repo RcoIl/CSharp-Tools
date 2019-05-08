@@ -25,7 +25,7 @@ namespace SharpChromeHistoryList
         {
 
             //创建命令，查询浏览记录
-            string query = "select visit_count,title,url from urls ORDER BY visit_count desc";
+            string query = "SELECT visit_count,title,url FROM urls ORDER BY visit_count desc";
             SQLiteDataReader reader = ConnectionCommands(path, query);
 
             string ChromeHistory = Environment.CurrentDirectory + "\\ChromeHistory.txt";
@@ -46,7 +46,7 @@ namespace SharpChromeHistoryList
         public static void ChromeDownloadList(string path)
         {
             //创建命令，查询下载记录
-            string query = "select downloads.target_path,downloads_url_chains.url from downloads,downloads_url_chains where downloads.id=downloads_url_chains.id";
+            string query = "SELECT downloads.target_path,downloads_url_chains.url FROM downloads,downloads_url_chains WHERE downloads.id=downloads_url_chains.id";
             SQLiteDataReader reader = ConnectionCommands(path, query);
 
             string ChromeDownloadList = Environment.CurrentDirectory + "\\ChromeDownloadList.txt";
