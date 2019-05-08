@@ -1,0 +1,16 @@
+E:\GitHub\CSharp_Tools\SharpChromeHistoryList\SharpChromeHistoryList\bin\Release\SharpChromeHistoryList.exe.config
+E:\GitHub\CSharp_Tools\SharpChromeHistoryList\SharpChromeHistoryList\bin\Release\SharpChromeHistoryList.exe
+E:\GitHub\CSharp_Tools\SharpChromeHistoryList\SharpChromeHistoryList\bin\Release\SharpChromeHistoryList.pdb
+E:\GitHub\CSharp_Tools\SharpChromeHistoryList\SharpChromeHistoryList\bin\Release\EntityFramework.dll
+E:\GitHub\CSharp_Tools\SharpChromeHistoryList\SharpChromeHistoryList\bin\Release\EntityFramework.SqlServer.dll
+E:\GitHub\CSharp_Tools\SharpChromeHistoryList\SharpChromeHistoryList\bin\Release\System.Data.SQLite.dll
+E:\GitHub\CSharp_Tools\SharpChromeHistoryList\SharpChromeHistoryList\bin\Release\System.Data.SQLite.EF6.dll
+E:\GitHub\CSharp_Tools\SharpChromeHistoryList\SharpChromeHistoryList\bin\Release\System.Data.SQLite.Linq.dll
+E:\GitHub\CSharp_Tools\SharpChromeHistoryList\SharpChromeHistoryList\bin\Release\EntityFramework.xml
+E:\GitHub\CSharp_Tools\SharpChromeHistoryList\SharpChromeHistoryList\bin\Release\EntityFramework.SqlServer.xml
+E:\GitHub\CSharp_Tools\SharpChromeHistoryList\SharpChromeHistoryList\bin\Release\System.Data.SQLite.xml
+E:\GitHub\CSharp_Tools\SharpChromeHistoryList\SharpChromeHistoryList\bin\Release\System.Data.SQLite.dll.config
+E:\GitHub\CSharp_Tools\SharpChromeHistoryList\SharpChromeHistoryList\obj\Release\SharpChromeHistoryList.csproj.CoreCompileInputs.cache
+E:\GitHub\CSharp_Tools\SharpChromeHistoryList\SharpChromeHistoryList\obj\Release\SharpChromeHistoryList.csproj.CopyComplete
+E:\GitHub\CSharp_Tools\SharpChromeHistoryList\SharpChromeHistoryList\obj\Release\SharpChromeHistoryList.exe
+E:\GitHub\CSharp_Tools\SharpChromeHistoryList\SharpChromeHistoryList\obj\Release\SharpChromeHistoryList.pdb
