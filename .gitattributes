@@ -1,0 +1,3 @@
+*.cs linguist-language=C#
+*.txt linguist-language=C#
+*.md linguist-language=C#
