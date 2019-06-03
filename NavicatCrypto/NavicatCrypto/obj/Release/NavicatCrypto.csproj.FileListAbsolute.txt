@@ -1,0 +1,5 @@
+E:\GitHub\CSharp_Tools\NavicatCrypto\NavicatCrypto\bin\Release\NavicatCrypto.exe
+E:\GitHub\CSharp_Tools\NavicatCrypto\NavicatCrypto\bin\Release\NavicatCrypto.pdb
+E:\GitHub\CSharp_Tools\NavicatCrypto\NavicatCrypto\obj\Release\NavicatCrypto.csproj.CoreCompileInputs.cache
+E:\GitHub\CSharp_Tools\NavicatCrypto\NavicatCrypto\obj\Release\NavicatCrypto.exe
+E:\GitHub\CSharp_Tools\NavicatCrypto\NavicatCrypto\obj\Release\NavicatCrypto.pdb
