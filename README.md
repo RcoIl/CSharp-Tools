@@ -16,4 +16,5 @@
 | **SharpADDNSDump**     | 查询 `LDAP` 中的 `DNS` 解析记录（`github` 有类似项目）  |    4    |
 | **SharpGetBasisDown**  | 获取机器基础信息（压缩包 `AES` 加密）其中包括高权限 `dump lsass` 内存 |   4.5   |
 | **SharpGetBasisList**  | 解密压缩包，解析 `sqlite` 数据库内容，以获取 `Chrome` 浏览器的浏览、下载记录、密码信息。 |   4.5   |
+| **SPNSearcher**        | 查询 `SPN` 记录，获取 `TGS-REP`                 |    4    |
 
