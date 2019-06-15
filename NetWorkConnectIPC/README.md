@@ -6,5 +6,5 @@
 
 效果如下：
 
-![Blog_2019-06-15_14-41-45](E:\GitHub\CSharp-Tools\NetWorkConnectIPC\Blog_2019-06-15_14-41-45.png)
+![Blog_2019-06-15_14-41-45](./Blog_2019-06-15_14-41-45.png)
 
