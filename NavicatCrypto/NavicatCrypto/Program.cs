@@ -26,7 +26,7 @@ namespace NavicatCrypto
                 string[] sArray = Regex.Split(Supersedences, ":", RegexOptions.IgnoreCase);
                 string Database_version = sArray[0].ToString();
                 string Database_Reg = sArray[1].ToString();
-                Console.WriteLine("[*] ConnectName: {0}", Database_version);
+                Console.WriteLine("[*] DatabaseName: {0}", Database_version);
                 DecryptStr(Database_Reg);
                 Console.WriteLine();
             }
