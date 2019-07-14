@@ -18,4 +18,5 @@
 | **SharpGetBasisList**  | 解密压缩包，解析 `sqlite` 数据库内容，以获取 `Chrome` 浏览器的浏览、下载记录、密码信息。 |   4.5   |
 | **NetWorkConnectIPC**  | `IPC$` 连接获取远程主机账号列表                      |    4    |
 | **DESDecrypt**         | 批量解密 `DES`加密算法                           |    4    |
+| **SharpChassisType**   | 用于判断当前机器类型（桌面计算机、笔记本等判断）                 |    4    |
 
