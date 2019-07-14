@@ -7,7 +7,11 @@ namespace DESDecrypt
 {
     class Program
     {
-        // 将命令运行结果写入文本
+        /// <summary>
+        /// 将命令运行结果写入文本
+        /// </summary>
+        /// <param name="outlist"></param>
+        /// <param name="outfile"></param>
         public static void TxtWriter(string outlist, string outfile)
         {
             string Path = Environment.CurrentDirectory + @"\" + outfile;
@@ -17,59 +21,13 @@ namespace DESDecrypt
             sw.Close();
         }
 
-        // 修改自 https://www.cnblogs.com/liqipeng/archive/2013/03/23/4576174.html
-        // 关键点：DES标准密钥就是56bit，8个字符即8个字节，每个字节的最高位不用，即每个字节只用7位，8个字符正好是56bit。如果少于8个字符，就用0填充，最后参与运算的一定是56bit。
-        static void Main(string[] args)
-        {
-            // Uses: DESDecrypt.exe Key Vector Encrypt.txt Decrypt.txt
-            string Key = args[0].PadRight(8, '0');
-            string Vector = args[1];
-            string EncryptFile = args[2];
-            string DecryptFile = args[3];
-            FileStream fileStream;
-            FileStream stream = fileStream = new FileStream(EncryptFile, FileMode.Open, FileAccess.Read);
-            try
-            {
-                StreamReader streamReader2;
-                StreamReader streamReader = streamReader2 = new StreamReader(stream, Encoding.Default);
-                try
-                {
-                    while (!streamReader.EndOfStream)
-                    {
-                        string EncryptTXT;
-                        if ((EncryptTXT = streamReader.ReadLine()) != null && EncryptTXT.Length != 0)
-                        {
-                            Console.WriteLine(DESDecrypt(EncryptTXT, Key, Vector));
-                            TxtWriter(DESDecrypt(EncryptTXT, Key, Vector), DecryptFile);
-                        }
-                    }
-                }
-                finally
-                {
-                    if (streamReader2 != null)
-                    {
-                        ((IDisposable)streamReader2).Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (fileStream != null)
-                {
-                    ((IDisposable)fileStream).Dispose();
-                }
-            }
-            Console.WriteLine("Finish!");
-            GC.Collect();
-        }
-
         /// <summary>
         /// DES解密
         /// </summary>
-        /// <param name="Data">被解密的密文</param>
-        /// <param name="Key">密钥</param>
-        /// <param name="Vector">向量</param>
-        /// <returns>明文</returns>
+        /// <param name="EncryptTXT"></param>
+        /// <param name="Key"></param>
+        /// <param name="Vector"></param>
+        /// <returns></returns>
         public static string DESDecrypt(String EncryptTXT, String Key, String Vector)
         {
             byte[] EncryptData = Convert.FromBase64String(EncryptTXT);
@@ -116,6 +74,64 @@ namespace DESDecrypt
             }
 
             return original;
+        }
+
+        /// <summary>
+        /// 逐行读取，逐行解密，逐行写入
+        /// </summary>
+        /// <param name="EncryptFile"></param>
+        /// <param name="DecryptFile"></param>
+        /// <param name="Key"></param>
+        /// <param name="Vector"></param>
+        public static void StreamReadLine(string Key, string Vector, string EncryptFile, string DecryptFile)
+        {
+            FileStream fileStream = new FileStream(EncryptFile, FileMode.Open, FileAccess.Read);
+            try
+            {
+                StreamReader streamReader2;
+                StreamReader streamReader = streamReader2 = new StreamReader(fileStream, Encoding.Default);
+                try
+                {
+                    while (!streamReader.EndOfStream)
+                    {
+                        string EncryptTXT;
+                        if ((EncryptTXT = streamReader.ReadLine()) != null && EncryptTXT.Length != 0)
+                        {
+                            Console.WriteLine(DESDecrypt(EncryptTXT, Key, Vector));
+                            TxtWriter(DESDecrypt(EncryptTXT, Key, Vector), DecryptFile);
+                        }
+                    }
+                }
+                finally
+                {
+                    if (streamReader2 != null)
+                    {
+                        ((IDisposable)streamReader2).Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (fileStream != null)
+                {
+                    ((IDisposable)fileStream).Dispose();
+                }
+            }
+            Console.WriteLine("Finish!");
+            GC.Collect();
+        }
+
+        // 修改自 https://www.cnblogs.com/liqipeng/archive/2013/03/23/4576174.html
+        // 关键点：DES标准密钥就是56bit，8个字符即8个字节，每个字节的最高位不用，即每个字节只用7位，8个字符正好是56bit。如果少于8个字符，就用0填充，最后参与运算的一定是56bit。
+        static void Main(string[] args)
+        {
+            // Uses: DESDecrypt.exe Key Vector Encrypt.txt Decrypt.txt
+            string Key = args[0].PadRight(8, '0');
+            string Vector = args[1];
+            string EncryptFile = args[2];
+            string DecryptFile = args[3];
+
+            StreamReadLine(Key, Vector, EncryptFile, DecryptFile);
         }
     }
 }
