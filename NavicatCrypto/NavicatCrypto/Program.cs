@@ -17,7 +17,7 @@ namespace NavicatCrypto
             {
                 @"MySql:Software\PremiumSoft\Navicat\Servers",
                 @"SQL Server:Software\PremiumSoft\NavicatMSSQL\Servers",
-                @"Oracle:Software\PremiumSoft\NavicatOra\AutoSave\Servers",
+                @"Oracle:Software\PremiumSoft\NavicatOra\Servers",
                 @"pgsql:Software\PremiumSoft\NavicatPG\Servers",
                 @"MariaDB:Software\PremiumSoft\NavicatMARIADB\Servers"
             });
