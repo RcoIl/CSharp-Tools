@@ -17,7 +17,7 @@ namespace NavicatCrypto
             {
                 @"MySql:Software\PremiumSoft\Navicat\Servers",
                 @"SQL Server:Software\PremiumSoft\NavicatMSSQL\Servers",
-                @"Oracle:Software\PremiumSoft\NavicatOra\Servers",
+                @"Oracle:Software\PremiumSoft\NavicatOra\AutoSave\Servers",
                 @"pgsql:Software\PremiumSoft\NavicatPG\Servers",
                 @"MariaDB:Software\PremiumSoft\NavicatMARIADB\Servers"
             });
@@ -30,6 +30,8 @@ namespace NavicatCrypto
                 DecryptStr(Database_Reg);
                 Console.WriteLine();
             }
+            //Navicat11Cipher Decrypt = new Navicat11Cipher();
+            //Console.WriteLine(Decrypt.DecryptString("7B7FD8615E11520743A7"));
         }
         
         static void DecryptStr(string basekey)
