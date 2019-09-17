@@ -22,4 +22,5 @@
 | **SharpDomainSpray**   | 枚举域内用户密码（指定单个密码-枚举，指定单个用户-爆破）            |    4    |
 | **SharpOfficeInfo**    | 查看 `Office` 版本及宏状态                       |    4    |
 | **SharpWebScan**       | 扫描 `C段` 的 `Web 应用`，获取 `Title`，可自定义多端口    |    4    |
+| **SharpDomainSession** | `NetSessionEnum` 与 `NetWkstaUserEnum`的一个 demo，可自行扩展 |    4    |
 
