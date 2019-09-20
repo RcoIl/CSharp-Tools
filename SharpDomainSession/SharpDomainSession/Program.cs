@@ -1,14 +1,18 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Net;
+using System.Security.Principal;
 
 namespace SharpDomainSession
 {
     class Program
     {
-        // 第二种方法 : NetSessionEnum
+        // 第二种方法 : NetSessionEnum -> 普通域用户权限
         #region PInvoke Imports
         [DllImport("netapi32.dll", SetLastError = true)]
         private static extern int NetSessionEnum(
@@ -115,7 +119,7 @@ namespace SharpDomainSession
             NERR_BufTooSmall = (NERR_BASE + 23)
         }
         #endregion
-        // 第二种方法 : NetWkstaUserEnum
+        // 第二种方法 : NetWkstaUserEnum -> 需要域管权限
         #region PInvoke Imports
         [DllImport("netapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         private static extern int NetWkstaUserEnum(
@@ -220,10 +224,6 @@ namespace SharpDomainSession
                             pstruct = (IntPtr)((int)pstruct + Marshal.SizeOf(typeof(WKSTA_USER_INFO_1)));
                         }
                     }
-                    else
-                    {
-                        //Console.WriteLine("A system error has occurred : " + nStatus);
-                    }
                 }
 
                 if (Bufptr != IntPtr.Zero)
@@ -232,6 +232,41 @@ namespace SharpDomainSession
             } while (nStatus == ERROR_MORE_DATA);
             return results;
         }
+
+        // 第三种方法 : 远程注册表 -> 需要域管权限
+        /// <summary>
+        /// 利用 OpenRemoteBaseKey 读取 HKEY_USERS 的键项
+        /// </summary>
+        /// <param name="server"></param>
+        /// <returns></returns>
+        private static IEnumerable<string> GetRegistryLoggedOn(string server)
+        {
+            
+            var users = new List<string>();
+            try
+            {
+                // 远程打开注册表配置单元，如果它不是我们当前的配置单元
+                RegistryKey key = RegistryKey.OpenRemoteBaseKey(RegistryHive.Users, server);
+
+                // 找到与我们的正则表达式匹配的所有子项
+                var filtered = key.GetSubKeyNames().Where(sub => SidRegex.IsMatch(sub));
+
+                foreach (var subkey in filtered)
+                {
+                    users.Add(subkey);
+                }
+            }
+            catch (Exception)
+            {
+                yield break;
+            }
+
+            foreach (var user in users.Distinct())
+            {
+                yield return user;
+            }
+        }
+        private static readonly Regex SidRegex = new Regex(@"S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]+$", RegexOptions.Compiled);
 
         public static void Main(string[] args)
         {
@@ -256,6 +291,18 @@ namespace SharpDomainSession
             for (int i = 0; i < Info_1.Length; i++)
             {
                 Console.WriteLine("  [>] {0,-20}{1,-35}{2,-15}{3,-10}", Info_1[i].wkui1_username, Info_1[i].wkui1_logon_server, Info_1[i].wkui1_logon_domain, Info_1[i].wkui1_oth_domains);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("[+] OpenRemoteBaseKey 演示：");
+            Console.WriteLine("  [*] {0,-45}    {1,-25}{2,-35}", "SID", " ","Host");
+            Console.WriteLine();
+            string Username;
+            foreach (string regSID in GetRegistryLoggedOn(host))
+            {
+
+                Username = new SecurityIdentifier(regSID).Translate(typeof(NTAccount)).ToString();
+                Console.WriteLine("  [>] {0,-45} -> {1,-25}{2,-35}", regSID, Username, host);
             }
         }
     }
