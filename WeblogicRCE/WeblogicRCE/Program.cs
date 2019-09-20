@@ -15,7 +15,7 @@ namespace WeblogicRCE
         {
             string usage = "";
             usage += "[+] Usage:\r\n";
-            usage += "[+] WeblogicRCE.exe -check <ip:port>\r\n";
+            usage += "[+] WeblogicRCE.exe -check ip port\r\n";
             Console.WriteLine(usage);
         }
 
