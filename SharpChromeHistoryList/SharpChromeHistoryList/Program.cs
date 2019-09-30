@@ -6,7 +6,7 @@ namespace SharpChromeHistoryList
     {
         static void Main(string[] args)
         {
-            string path = Environment.CurrentDirectory + @"\\History";
+            string path = Environment.CurrentDirectory + @"\History";
             HistoryList.ChromeHistory(path);
             HistoryList.ChromeDownloadList(path);
         }
