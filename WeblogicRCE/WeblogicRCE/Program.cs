@@ -62,7 +62,8 @@ namespace WeblogicRCE
                     Console.WriteLine("\n[+] Welcome To WeblogicRCE Check !!!\n");
                     string ip = args[1];
                     int port = Convert.ToInt32(args[2]);
-                    Check(ip, port);
+                    //Check(ip, port);
+                    CVE_2019_2725_POC.Check(ip, port);
                 }
                 else
                 {

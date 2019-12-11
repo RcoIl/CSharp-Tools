@@ -19,4 +19,5 @@
 | **SharpWebScan**       | 扫描 `C段` 的 `Web 应用`，获取 `Title`，可自定义多端口       |     4     |
 | **SharpDomainSession** | `NetSessionEnum` 与 `NetWkstaUserEnum`的一个 demo，可自行扩展 |     4     |
 | **SPNSearcher**        | 获取 SPN                                                     |     4     |
+| **SharpSCShell**       | `SCShell` 的 C# 版本                                         |     4     |
 
