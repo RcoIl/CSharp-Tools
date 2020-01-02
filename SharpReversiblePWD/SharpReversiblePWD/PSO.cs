@@ -5,8 +5,6 @@
  * Blog: https://rcoil.me
  * ==============================================================================*/
 
-// http://www.utools.nl/downloads/UnlockADDS.pdf#509
-
 using System;
 using System.Collections.Generic;
 using System.Data;
