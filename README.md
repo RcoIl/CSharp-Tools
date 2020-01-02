@@ -20,4 +20,5 @@
 | **SharpDomainSession** | `NetSessionEnum` 与 `NetWkstaUserEnum`的一个 demo，可自行扩展 |     4     |
 | **SPNSearcher**        | 获取 SPN                                                     |     4     |
 | **SharpSCShell**       | `SCShell` 的 C# 版本                                         |     4     |
+| **SharpReversiblePWD** | 为域用户启用 *可逆加密* 的三种方法                           |     4     |
 
