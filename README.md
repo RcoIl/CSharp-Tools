@@ -21,4 +21,5 @@
 | **SPNSearcher**        | 获取 SPN                                                     |     4     |
 | **SharpSCShell**       | `SCShell` 的 C# 版本                                         |     4     |
 | **SharpReversiblePWD** | 为域用户启用 *可逆加密* 的三种方法                           |     4     |
+| **SharpWMIcommand**    | 使用 WMI远程执行命令，利用 SMB 读取结果                      |     4     |
 
