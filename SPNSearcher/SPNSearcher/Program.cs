@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.DirectoryServices.ActiveDirectory;
-using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
@@ -88,7 +87,7 @@ namespace SPNSearcher
         }
         
         // helper to wrap output strings
-        public static System.Collections.Generic.IEnumerable<string> Split(string text, int partLength)
+        public static IEnumerable<string> Split(string text, int partLength)
         {
             if (text == null) { throw new ArgumentNullException("singleLineString"); }
 
@@ -116,10 +115,9 @@ namespace SPNSearcher
         {
             Console.WriteLine("[*] Current Domian SPN Information:");
             Console.WriteLine();
-            DirectoryEntry gcEntry = new DirectoryEntry("GC://" + RootDSE);
-            
+
             string querySPN = @"(&(!objectClass=computer)(servicePrincipalName=*))";
-            using (gcEntry)
+            using (var gcEntry = new DirectoryEntry("GC://" + RootDSE))
             {
                 DirectorySearcher mssqlSearch = new DirectorySearcher(gcEntry, querySPN);
 
@@ -202,13 +200,14 @@ namespace SPNSearcher
         static void Main(string[] args)
         {
             Domain CurrentDomain = Domain.GetCurrentDomain();
-            DirectoryEntry rootEntry = new DirectoryEntry("LDAP://rootDSE");
-            string RootDSE = (string)rootEntry.Properties["defaultNamingContext"].Value;
+            using (var rootEntry = new DirectoryEntry("LDAP://rootDSE"))
+            {
+                string RootDSE = (string)rootEntry.Properties["defaultNamingContext"].Value;
 
-            Console.WriteLine("[*] Current Domain: " + CurrentDomain);
-            GetUserSPN(RootDSE);
-            //GetSPNInfor(RootDSE);
+                Console.WriteLine("[*] Current Domain: " + CurrentDomain);
+                GetUserSPN(RootDSE);
+                //GetSPNInfor(RootDSE);
+            }
         }
-
     }
 }
