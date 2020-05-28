@@ -24,5 +24,5 @@
 | **SharpWMIcommand**    | 使用 WMI远程执行命令，利用 SMB 读取结果                      |     4     |
 | **SharpGetCmdLine**    | 获取当前所有进程的 CommandLine                               |     4     |
 | **SharpVssown**        | vssown.vbs 的 C# 版本（部分功能），当然，有瑕疵              |     4     |
-|                        |                                                              |           |
+| **SharpNTDSDumpEx**    | 解析 NTDS.dit 数据库                                         |     4     |
 
