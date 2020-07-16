@@ -25,4 +25,5 @@
 | **SharpGetCmdLine**    | 获取当前所有进程的 CommandLine                               |     4     |
 | **SharpVssown**        | vssown.vbs 的 C# 版本（部分功能），当然，有瑕疵              |     4     |
 | **SharpNTDSDumpEx**    | 解析 NTDS.dit 数据库                                         |     4     |
+| **SharpOXID-Find**     | OXID 解析器，用于探测多网口机器（依赖于 135 端口）           |     4     |
 
