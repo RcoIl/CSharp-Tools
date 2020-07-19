@@ -84,7 +84,10 @@ namespace SharpOXID_Find
 
                 for (int i = 0; i < hostname_list.Length - 1; i++)
                 {
-                    Console.WriteLine("  [>] Address: " + Encoding.Default.GetString(Hex2Byte(hostname_list[i].Replace("7 0 ", "").Replace(" 0", ""))));
+                    if (hostname_list[i].Length > 3)
+                    {
+                        Console.WriteLine("  [>] Address: " + Encoding.Default.GetString(Hex2Byte(hostname_list[i].Replace(" 0", "").Substring(2))));
+                    }
                 }
             } 
             catch (Exception ex)
