@@ -82,7 +82,7 @@ namespace SharpOXID_Find
                 String response_v2 = response_v1.Substring(0, int.Parse(response_v1.IndexOf("9 0 ff ff 0").ToString()));
                 String[] hostname_list = response_v2.Split(new string[] { "0 0 0 " }, StringSplitOptions.RemoveEmptyEntries);
 
-                for (int i = 0; i < hostname_list.Length - 1; i++)
+                for (int i = 0; i < hostname_list.Length; i++)
                 {
                     if (hostname_list[i].Length > 3)
                     {
