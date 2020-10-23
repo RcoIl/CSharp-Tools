@@ -26,45 +26,21 @@ namespace SharpOXID_Find
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x00 };
         #endregion
 
-        #region byte[] 与 hex 的互转
-        /// <summary>
-        /// byte[]数组转16进制文件
-        /// </summary>
-        /// <param name="byteContents"></param>
-        /// <returns></returns>
-        private static String Byte2Hex(byte[] bytContents)
+        private static byte[] strToToHexByte(string hexString)
         {
-            int length = bytContents.Length;
-            StringBuilder builder = new StringBuilder(length * 3);
-            foreach (byte value in bytContents)
-            {
-                builder.AppendFormat("{0:x} ", value);
-
-            }
-            return builder.ToString();
+            hexString = hexString.Replace(" ", "");
+            if ((hexString.Length % 2) != 0)
+                hexString += " ";
+            byte[] returnBytes = new byte[hexString.Length / 2];
+            for (int i = 0; i < returnBytes.Length; i++)
+                returnBytes[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
+            return returnBytes;
         }
- 
-        /// <summary>
-        /// 16 进制转 byte[] 数组
-        /// </summary>
-        /// <param name="hexContent">16 进制字符串</param>
-        /// <returns></returns>
-        public static byte[] Hex2Byte(string hexContent)
-        {
-            string[] arry = hexContent.Split(' ');
-            arry = arry.Skip(0).Take(arry.Length - 1).ToArray();
-            List<byte> lstRet = new List<byte>();
-            foreach (string s in arry)
-            {
-                lstRet.Add(Convert.ToByte(s, 16));
-            }
-            return lstRet.ToArray();
-        }
-        #endregion
 
         static void Main(string[] args)
         {
-            string host = args[0];
+            String host = args[0];
+            String response = String.Empty;
             try 
             {
                 Console.WriteLine("[*] Retrieving network interfaces of {0}", host);
@@ -78,17 +54,22 @@ namespace SharpOXID_Find
                     sock.Receive(response_v0);
                 }
 
-                String response_v1 = Byte2Hex(response_v0.Skip(40).ToArray());
-                String response_v2 = response_v1.Substring(0, int.Parse(response_v1.IndexOf("9 0 ff ff 0").ToString()));
-                String[] hostname_list = response_v2.Split(new string[] { "0 0 0 " }, StringSplitOptions.RemoveEmptyEntries);
+                String[] response_v1 = BitConverter.ToString(response_v0.Skip(40).ToArray()).Replace("-", "").Split(new String[] { "0900FFFF00" }, StringSplitOptions.RemoveEmptyEntries);
+                String[] response_v2 = response_v1[0].Split(new String[] { "0700" }, StringSplitOptions.RemoveEmptyEntries);
+                String hostname = Encoding.Default.GetString(strToToHexByte(response_v2[0])).Replace("\0", "");
 
-                for (int i = 0; i < hostname_list.Length; i++)
+                response = String.Format("Retrieving network interfaces of {0}", host);
+                response += String.Format("\n  [>] HostName: {0}", hostname);
+
+
+                for (int i = 0; i < response_v2.Length; i++)
                 {
-                    if (hostname_list[i].Length > 3)
+                    if (response_v2[i].Length > 3)
                     {
-                        Console.WriteLine("  [>] Address: " + Encoding.Default.GetString(Hex2Byte(hostname_list[i].Replace(" 0", "").Substring(2))));
+                        response += String.Format("\n  [>] Address : {0}", Encoding.Default.GetString(strToToHexByte(response_v2[i])).Replace("\0", ""));
                     }
                 }
+                Console.WriteLine(response);
             } 
             catch (Exception ex)
             {
